@@ -153,6 +153,53 @@ def get_humidity():
             humidity_max[-1] = humidity
     return (days, humidity_max)
 
+def get_rain_data():
+    days = []
+    unique_dates = []
+    rain_volume = []
+
+    forecaster = mgr.forecast_at_place(location, '3h')
+    forecast = forecaster.forecast
+
+    for weather in forecast:  
+        day = datetime.utcfromtimestamp(weather.reference_time())
+        date = day.date()
+        if date not in unique_dates:
+            unique_dates.append(date)
+            rain_volume.append(0)
+            days.append(date)
+        rain = weather.rain.get('3h', 0) if weather.rain else 0
+        rain_volume[-1] += rain
+    return days, rain_volume
+
+def plot_rain_graph():
+    days, rain = get_rain_data()
+    st.write("_____________________________________")
+    st.title("Rain Forecast (Total per Day)")
+
+    plt.style.use('ggplot')
+    plt.figure(figsize=(8, 4))
+    plt.xlabel('Day')
+    plt.ylabel('Rain Volume (mm)')
+    plt.title('Rain Forecast (Next 5 Days)')
+
+    day_nums = dates.date2num(days)
+    plt.xticks(day_nums)
+    axes = plt.gca()
+    axes.xaxis.set_major_formatter(dates.DateFormatter('%m/%d'))
+
+    bars = plt.bar(day_nums, rain, color='#5DADE2')
+    y_max = axes.get_ylim()[1]
+    label_offset = y_max * 0.1
+    for bar in bars:
+        height = bar.get_height()
+        xpos = bar.get_x() + bar.get_width() / 2.0
+        ypos = height - label_offset
+        plt.text(xpos, ypos, f"{round(height, 1)} mm", ha='center', va='bottom', color='white')
+
+    st.pyplot(plt.gcf())
+    plt.close()
+
 def plot_humidity_graph():
     days, humidity = get_humidity()
     st.write("_____________________________________")
@@ -365,6 +412,7 @@ if __name__ == '__main__':
                     st.write("Humidity already represented in Scatter Plot.")
                 elif graph == 'Heatmap':
                     st.write("Humidity already represented in Heatmap.")
+                plot_rain_graph()
 
             except Exception as e:
                 st.error("⚠️ Location Not Found! Try using 'City, CountryCode' format (e.g., Mumbai, IN)")

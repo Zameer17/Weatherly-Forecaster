@@ -61,6 +61,12 @@ Displays alerts based on upcoming weather:
 
 ---
 
+### ⛈️ **7. Rain Graph**
+
+Rain Volume: Displays the predicted rain volume for the next 5 days in a bar chart.
+
+---
+
 ### 🧠 **Error Handling**
 
 * If location is not found, it shows a warning.

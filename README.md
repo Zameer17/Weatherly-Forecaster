@@ -1,8 +1,3 @@
-# Weatherly-Forecaster
-This app is a user-friendly weather forecasting dashboard that offers multiple visualizations of temperature and humidity, alerts for extreme conditions, and sunrise/sunset information, all dynamically based on user input. It is ideal for both casual users and students looking to understand data visualization using real-world weather data.
-
-This Streamlit-based Python app is a **weather forecasting dashboard** called **"Weatherly Forecaster"**, which uses the **PyOWM (OpenWeatherMap) API** to show the current and upcoming weather conditions for a user-specified city.
-
 ### 🔧 How it works — Summary of Functionality:
 
 ---
